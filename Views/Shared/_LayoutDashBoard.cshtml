@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Practico.styles.css" asp-append-version="true" />
+
+    <!-- Custom fonts for this template-->
+    <link href="/dashboard/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/dashboard/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css">
+
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-action="Index" asp-controller="DashBoard">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">@Context.Session.GetString("UserName")</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+   
+                <a class="nav-link" asp-controller="DashBoard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+ 
+            </li>
+
+            @if (int.Parse(Context.Session.GetString("IdRole")) == 2)
+            {
+                <hr class="sidebar-divider my-0">
+                <li class="nav-item active">
+
+                <a class="nav-link" asp-controller="DashBoard" asp-action="BossFormPost">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dotazník</span>
+                </a>
+
+            </li>
+            }
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item active">
+                <a class="nav-link" asp-controller="DashBoard" asp-action="logout">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Odhlásit se</span>
+                </a>
+            </li>
+        </ul>
+          
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand topbar mb-4 static-top">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+              
+          
+
+                </nav>
+     
+     @RenderBody()
+            </div>
+        </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+                <script src="/dashboard/vendor/jquery/jquery.min.js"></script>
+                <script src="/dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                <!-- Core plugin JavaScript-->
+                <script src="/dashboard/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+                <!-- Custom scripts for all pages-->
+                <script src="/dashboard/js/sb-admin-2.min.js"></script>
+
+                <!-- Page level plugins -->
+    
+
+                <!-- Page level custom scripts -->
+        <script src="/dashboard/js/demo/chart-area-demo.js"></script>
+       
+
+        <!-- Page level plugins -->
+
+        <script src="//cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/dashboard/js/demo/datatables-demo.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

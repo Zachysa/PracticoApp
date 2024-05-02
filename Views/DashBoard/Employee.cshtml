@@ -1,0 +1,127 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutDashBoard.cshtml";
+}
+
+@model List<Question>
+
+@{
+    DateTime todayMidnight = DateTime.Today;
+}
+
+@if (ViewBag.time < todayMidnight)
+{
+
+
+    <div class="container-fluid">
+        <div style="margin-right:5vw;margin-left:5vw;width:auto" class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h4 class="m-0 font-weight-bold text-primary">Dotazník</h4>
+            </div>
+            <div class="card-body" style="width:auto">
+                <div class="table-responsive">
+                    <form asp-action="FormPost" asp-controller="DashBoard">
+                        <input id="counter" type="hidden" value="0" />
+                        @foreach (Question question in Model)
+                        {
+                            <div class="mb-3">
+                                <label style="font-size:20px;font-weight:bold" for="exampleInputEmail1" class="form-label">@question.Name</label>
+                                @{
+                                    var id2 = question.Id.ToString() + "q";
+                                }
+                                <input id="@id2" type="hidden" name="@question.Id;" value="@question.Id" />
+                                <div class="row row-cols-5 justify-content-md-center" id="select1">
+                                    <div class="col-md-auto">
+                                        @{
+                                            id2 = question.Id.ToString() + "1";
+                                        }
+                                        <img id="@id2" onclick="SetSize(@question.Id,1)" style="height:5vw;padding:0px" class="rounded mx-auto d-block" src="/dashboard/img/smile1.png" />
+                                    </div>
+                                    <div class="col-md-auto">
+                                        @{
+                                            id2 = question.Id.ToString() + "2";
+                                        }
+                                        <img id="@id2" onclick="SetSize(@question.Id,2)" style="height:5vw;padding:0px" class="rounded mx-auto d-block" src="/dashboard/img/smile2.png" />
+                                    </div>
+                                    <div class="col-md-auto">
+                                        @{
+                                            id2 = question.Id.ToString() + "3";
+                                        }
+                                        <img id="@id2" onclick="SetSize(@question.Id,3)" style="height:5vw;padding:0px" class="rounded mx-auto d-block" src="/dashboard/img/smile3.png" />
+                                    </div>
+                                    <div class="col-md-auto">
+                                        @{
+                                            id2 = question.Id.ToString() + "4";
+                                        }
+                                        <img id="@id2" onclick="SetSize(@question.Id,4)" style="height:5vw;padding:0px" class="rounded mx-auto d-block" src="/dashboard/img/smile4.png" />
+                                    </div>
+                                    <div class="col-md-auto">
+                                        @{
+                                            id2 = question.Id.ToString() + "5";
+                                        }
+                                        <img id="@id2" onclick="SetSize(@question.Id,5)" style="height:5vw;padding:0px" class="rounded mx-auto d-block" src="/dashboard/img/smile5.png" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <button style="font-size:120%" type="submit" id="buttSub" class="btn btn-primary" disabled>Odeslat</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="card bg-success text-white mb-3 shadow" style="max-width: 40rem;">
+            <div class="row">
+            <div class="card-body">
+                   
+                       
+                <h3 style="font-weight:bold" class="card-text">
+                            <div class="row">
+                                <div class="col-md-auto">
+                    Dotazník byl již odeslán. Moc si toho vážíme!
+                                </div>
+                                <div class="col-md-auto">
+                                    <img style="height:40px" src="/dashboard/img/smile6.png" />
+                                </div>
+                            </div>
+                </h3>
+
+
+
+                </div>
+        </div>
+    </div>
+    </div>
+}
+<script>
+   function SetSize(s,id)
+   {
+       var res = s.toString();
+        res += id.toString();
+        document.getElementById(res).style.height = '7vw';
+        document.getElementById(res).style.opacity = 1;
+        document.getElementById(s.toString() + "q").name = s.toString() + ";";
+        document.getElementById(s.toString()+"q").name += id.toString();
+       for(var i = 1; i < 6; i++)
+       {
+         var test = s.toString() + i.toString();
+         if(test != res)
+         {
+                document.getElementById(res).style.height = '5vw';
+                document.getElementById(test).style.opacity = 0.3;
+         }
+         else
+         {
+                document.getElementById('counter').setAttribute('value', parseInt(document.getElementById('counter').getAttribute('value')) + 1);
+                if (parseInt(document.getElementById('counter').getAttribute('value')) >=3)
+                {
+                    document.getElementById('buttSub').disabled = false;
+                }
+         }
+       }
+   }
+</script>

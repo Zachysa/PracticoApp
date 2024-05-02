@@ -1,0 +1,187 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutDashBoard.cshtml";
+}
+@model DashBoardModel
+<script src="~/dashboard/vendor/chart.js/Chart.min.js"></script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5">
+    <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Přidat zaměstnance</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+                <form method="post" action="/DashBoard/AddEmployes">
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Počet zaměstnanců</label>
+                        <input type="number" class="form-control" name="countEmp" min="1" max="10" required>
+            <br />
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Přidat</button>
+        </div>
+            </div>
+    </form>
+        </div>
+        </div>
+    </div>
+        </div>
+        <div class="col-xl-8 col-lg-7">
+     
+        <div style="margin-right:5vw;margin-left:5vw;width:auto" class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Četnost všech nálad</h6>
+            </div>
+                <div class="card-body">
+                    @if (Model.count[0] > 0 || Model.count[1] > 0 || Model.count[2] > 0 || Model.count[3] > 0 || Model.count[4] > 0)
+                    {
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="myPieChart"></canvas>
+                            <script>
+                                Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                                Chart.defaults.global.defaultFontColor = '#858796';
+
+                                // Pie Chart Example
+                                var ctx = document.getElementById("myPieChart");
+                                var myPieChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                labels: ['Smutní', 'Neutrální', 'Spokojení', 'Šťastní', 'Velmi šťastní'],
+                                datasets: [{
+                                data: @Html.Raw(Json.Serialize(Model.count)),
+                                backgroundColor: ['#E53A3A', '#F3861A', '#F6F31C', '#C5F134', '#16F823'],
+                                hoverBackgroundColor: ['#B00606', '#C86B10', '#D5D212', '#8FB70D', '#0FB218'],
+                                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                                }],
+                                },
+                                options: {
+                                maintainAspectRatio: false,
+                                tooltips: {
+                                backgroundColor: "rgb(255,255,255)",
+                                bodyFontColor: "#858796",
+                                borderColor: '#dddfeb',
+                                borderWidth: 1,
+                                xPadding: 15,
+                                yPadding: 15,
+                                displayColors: false,
+                                caretPadding: 10,
+                                },
+                                legend: {
+                                display: false
+                                },
+                                cutoutPercentage: 80,
+                                },
+                                });
+                            </script>
+                        </div>
+
+                        <div class="mt-4 text-center small">
+                            <span class="mr-2">
+                                <i style="color:#E53A3A" class="fas fa-circle"></i> <img style="width:3%" src="~/dashboard/img/smile1.png" />
+                            </span>
+                            <span class="mr-2">
+                                <i style="color:#F3861A" class="fas fa-circle"></i> <img style="width:3%" src="~/dashboard/img/smile2.png" />
+                            </span>
+                            <span class="mr-2">
+                                <i style="color:#F6F31C" class="fas fa-circle"></i> <img style="width:3%" src="~/dashboard/img/smile3.png" />
+                            </span>
+                            <span class="mr-2">
+                                <i style="color:#C5F134" class="fas fa-circle"></i> <img style="width:3%" src="~/dashboard/img/smile4.png" />
+                            </span>
+                            <span class="mr-2">
+                                <i style="color:#16F823" class="fas fa-circle"></i> <img style="width:3%" src="~/dashboard/img/smile5.png" />
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <h1>Žádná data</h1>
+                    }
+                </div>
+        </div>
+    </div>
+    </div>
+   
+    
+
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Všichni zaměstnanci</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table style="text-align:center" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Přezdívka</th>
+                            <th>Heslo</th>
+                            <th>Jméno</th>
+                            <th>Příjmení</th>
+                            <th>Email</th>
+                            <th>Akce</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Přezdívka</th>
+                            <th>Heslo</th>
+                            <th>Jméno</th>
+                            <th>Příjmení</th>
+                            <th>Email</th>
+                            <th>Akce</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                        @for(int i = 0; i < Model.Users.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.Users[i].Name</td>
+                                <td>@Model.Users[i].Password</td>
+                                <th>
+                                    @if (@Model.Users[i].FirstName == null)
+                                    {
+                                        <p>-</p>
+                                    }
+                                    else
+                                    {
+                                        @Model.Users[i].FirstName
+                                    }
+                                <th>
+                                        @if (@Model.Users[i].Surname == null)
+                                        {
+                                        <p>-</p>
+                                        }
+                                        else
+                                        {
+                                            @Model.Users[i].Surname
+                                        }
+                                </th>
+                                <th>
+                                        @if (@Model.Users[i].Email == null)
+                                        {
+                                        <p>-</p>
+                                        }
+                                        else
+                                        {
+                                            @Model.Users[i].Email
+                                        }
+                                </th>
+                                <td>
+
+                                    <a asp-action="EmployeeMoodDetail" asp-controller="DashBoard" asp-route-IdUser="@Model.Users[i].Id" class="btn btn-primary">Deteil</a>
+                                    <a style="color:black" asp-action="EmployeeEdit" asp-controller="DashBoard" asp-route-IdUser="@Model.Users[i].Id" class="btn btn-warning">Editace</a>
+                                
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
