@@ -31,6 +31,10 @@ namespace Practico.Controllers
                 return RedirectToAction("BossFormPost");
             List<int> counter = new List<int>() { 0, 0, 0, 0, 0 };
             List<SurveyAnswerQuestion> surveyAnswerQuestions = context.SurveysAnswersQuestions.ToList();
+            List<DateTime> dates = new List<DateTime>();
+            List<Tuple<int, int>> values = new List<Tuple<int, int>>();
+            List<string> datesValue = new List<string>();
+            List<double> valuesRtn = new List<double>();
             DashBoardModel model = new DashBoardModel();
             model.count = new List<int>();
             foreach (var item in surveyAnswerQuestions)
@@ -39,11 +43,35 @@ namespace Practico.Controllers
                 if (context.BossEmployees.Where(x => ((x.IdEmployee == s.IdEmployee) && (x.IdBoss == int.Parse(HttpContext.Session.GetString("UserId"))))).FirstOrDefault() != null)
                 {
                     counter[item.Answer - 1]++;
+
+                    if (dates.Count == 0)
+                    {
+                        dates.Add(s.DateTime);
+                        values.Add(new Tuple<int, int>(1, item.Answer));
+                    }
+                    else if (dates[dates.Count - 1].Year == s.DateTime.Year &&
+                        dates[dates.Count - 1].Month == s.DateTime.Month && dates[dates.Count - 1].Day == s.DateTime.Day)
+                    {
+
+                        values[values.Count - 1] = new Tuple<int, int>(values[values.Count - 1].Item1 + 1, values[values.Count - 1].Item2 + item.Answer);
+                    }
+                    else
+                    {
+                        dates.Add(s.DateTime);
+                        values.Add(new Tuple<int, int>(1, item.Answer));
+                    }
                 }
 
             }
+            for (int i = 0; i < values.Count; i++)
+            {
+                valuesRtn.Add((double)values[i].Item2 / (double)values[i].Item1);
+                datesValue.Add(dates[i].ToString("dd/MM/yyyy"));
+            }
 
             model.count = counter;
+            model.dates = datesValue;
+            model.values = valuesRtn;
             model.Users = tbUser.EmployeesByBossId(int.Parse(HttpContext.Session.GetString("UserId")));
             return View(model);
         }

@@ -43,6 +43,8 @@ namespace Practico.Models
     {
         public List<int> count { get; set; }
         public List<User> Users { get; set; }
+        public List<double> values { get; set; }
+        public List<string> dates { get; set; }
 
     }
 
