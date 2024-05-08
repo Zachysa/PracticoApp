@@ -85,6 +85,45 @@ namespace Practico.Controllers
             return View(list);
         }
 
+        public IActionResult RemoveUser(int userId)
+        {
+            foreach (var item in context.Users.ToList())
+            {
+                if (item.Id == userId)
+                {
+                    context.Remove(item);
+                    context.SaveChanges();
+                }
+
+            }
+            foreach (var item in context.Surveys)
+            {
+                if (item.IdEmployee == userId)
+                {
+                    foreach (var item2 in context.SurveysAnswersQuestions)
+                    {
+                        if (item2.IdSurvey == item.Id)
+                        {
+                            context.Remove(item2);
+                            context.SaveChanges();
+                        }
+                    }
+                    context.Remove(item);
+                    context.SaveChanges();
+                }
+
+            }
+            foreach (var item in context.BossEmployees)
+            {
+                if (item.IdEmployee == userId)
+                {
+                    context.Remove(item);
+                    context.SaveChanges();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult BossFormPost()
         {

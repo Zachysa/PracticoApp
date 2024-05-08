@@ -262,7 +262,9 @@
 
                                     <a asp-action="EmployeeMoodDetail" asp-controller="DashBoard" asp-route-IdUser="@Model.Users[i].Id" class="btn btn-primary">Detail</a>
                                     <a style="color:black" asp-action="EmployeeEdit" asp-controller="DashBoard" asp-route-IdUser="@Model.Users[i].Id" class="btn btn-warning">Editace</a>
-                                
+                                    <button onclick="SetId(@Model.Users[i].Id)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Smazat
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -274,3 +276,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Smazat zaměstnance</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zpět</button>
+                <button onclick="Remove()" id="removeBtn" type="button" class="btn btn-danger">Smazat</button>
+                <input id="rmUserId" hidden />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const myModal = document.getElementById('myModal')
+    myModal.addEventListener('shown.bs.modal', () => {
+    })
+
+    function Remove()
+    {
+        window.location.href = "/DashBoard/RemoveUser?userId=" + document.getElementById('rmUserId').value;;
+    }
+
+    function SetId(id)
+    {
+        const myModal = document.getElementById('rmUserId');
+        myModal.value = id;
+    }
+
+   
+</script>
